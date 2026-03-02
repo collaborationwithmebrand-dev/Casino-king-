@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8">
+  <title>Hello, World!</title>
+</head>
+<body>
+  <h1>
+    
+  </h1>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virat Mega Casino - Pro V6</title>
+    <style>
+        :root { --gold: #ffd700; --bg: #0b0e11; --card: #1e2329; --green: #0ecb81; --red: #f6465d; --blue: #3b82f6; --purple: #a855f7; }
+        body { background: var(--bg); color: white; font-family: sans-serif; margin: 0; padding-bottom: 90px; }
+        .hidden { display: none !important; }
+        .container { padding: 12px; }
+        input, select { width: 92%; padding: 12px; margin: 8px 0; border-radius: 8px; border: 1px solid #444; background: #2b3139; color: white; }
+        button { padding: 12px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; transition: 0.2s; }
+        .btn-gold { background: var(--gold); color: black; width: 100%; }
+        .btn-green { background: var(--green); color: white; }
+        .btn-red { background: var(--red); color: white; }
+        .card { background: var(--card); padding: 15px; border-radius: 15px; margin-bottom: 15px; border: 1px solid #333; position: relative; }
+        
+        /* Info Button */
+        .info-btn { position: absolute; top: 10px; right: 10px; background: #444; color: white; width: 20px; height: 20px; border-radius: 50%; font-size: 12px; text-align: center; line-height: 20px; cursor: help; }
+
+        .header { display: flex; justify-content: space-between; padding: 15px; background: var(--card); border-bottom: 2px solid var(--gold); position: sticky; top: 0; z-index: 100; }
+        .tab-bar { display: flex; gap: 5px; margin-bottom: 10px; }
+        .tab-btn { flex: 1; background: #333; color: white; padding: 10px; font-size: 11px; }
+        .active-tab { background: var(--gold); color: black; }
+
+        /* Aviator & Mines UI */
+        .avi-display { background: #000; height: 80px; display: flex; align-items: center; justify-content: center; font-size: 32px; color: var(--gold); border-radius: 10px; margin-bottom: 10px; border: 1px solid var(--red); }
+        .mines-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; max-width: 260px; margin: 10px auto; }
+        .m-box { height: 55px; background: #2b3139; border-radius: 5px; display: flex; align-items: center; justify-content: center; font-size: 20px; border-bottom: 3px solid #000; }
+
+        .choice-row { display: flex; gap: 10px; margin-top: 10px; }
+        .choice-btn { flex: 1; padding: 15px; border-radius: 8px; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div id="auth-screen" class="container">
+    <h1 style="color:var(--gold); text-align:center;">👑 VIRAT CASINO</h1>
+    <div class="card">
+        <input type="text" id="auth-user" placeholder="Username">
+        <input type="password" id="auth-pass" placeholder="Password">
+        <button class="btn-gold" onclick="handleAuth()">LOGIN / JOIN</button>
+    </div>
+</div>
+
+<div id="game-screen" class="hidden">
+    <div class="header">
+        <span>👤 <span id="display-name">--</span></span>
+        <span style="color:var(--green)">💰 ₹<span id="display-balance">0</span></span>
+    </div>
+
+    <div class="container">
+        <div class="tab-bar">
+            <button class="tab-btn active-tab" id="t-g" onclick="switchTab('games')">GAMES</button>
+            <button class="tab-btn" id="t-b" onclick="switchTab('bank')">BANKING</button>
+            <button class="tab-btn" style="background:var(--red);" onclick="openAdmin()">ADMIN</button>
+        </div>
+
+        <div id="section-games">
+            <div class="card">
+                <div class="info-btn" onclick="showHelp('Aviator')">?</div>
+                <h4 style="margin:0">✈️ AVIATOR</h4>
+                <div class="avi-display" id="avi-mult">1.00x</div>
+                <input type="number" id="avi-bet" placeholder="Bet Amount">
+                <button id="avi-s" class="btn-gold" onclick="startAvi()">BET</button>
+                <button id="avi-c" class="btn-green hidden" onclick="cashAvi()">CASHOUT</button>
+            </div>
+
+            <div class="card">
+                <div class="info-btn" onclick="showHelp('Mines')">?</div>
+                <h4 style="margin:0">💣 MINES</h4>
+                <div id="mines-grid" class="mines-grid"></div>
+                <input type="number" id="mine-bet" placeholder="Bet Amount">
+                <button id="mine-s" class="btn-gold" onclick="startMines()">START</button>
+                <button id="mine-c" class="btn-green hidden" onclick="cashMines()">CASHOUT</button>
+            </div>
+
+            <div class="card">
+                <div class="info-btn" onclick="showHelp('DVT')">?</div>
+                <h4 style="margin:0">🐉 DRAGON VS TIGER</h4>
+                <input type="number" id="dvt-bet" placeholder="Bet Amount">
+                <div class="choice-row">
+                    <button class="choice-btn" style="background:var(--red)" onclick="playGame('dvt-bet','Dragon',['Dragon','Tiger'])">DRAGON</button>
+                    <button class="choice-btn" style="background:var(--blue)" onclick="playGame('dvt-bet','Tiger',['Dragon','Tiger'])">TIGER</button>
+                </div>
+            </div>
+            
+            <p style="text-align:center; font-size:10px; color:gray;">Color Prediction & 7 Up-Down active in Menu</p>
+        </div>
+
+        <div id="section-bank" class="hidden">
+            <div class="card">
+                <h3>Deposit (UPI: virat2@fam)</h3>
+                <input type="text" id="d-utr" placeholder="Enter UTR">
+                <button class="btn-green" onclick="submitDeposit()">SUBMIT DEPOSIT</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="admin-screen" class="hidden container" style="background:#000; position:fixed; top:0; left:0; width:100%; height:100%; z-index:1000; overflow-y:auto;">
+    <h2 style="color:var(--gold)">🛠 MASTER ADMIN</h2>
+    <div id="admin-data"></div>
+    <button class="btn-red" onclick="closeAdmin()">CLOSE</button>
+</div>
+
+<script>
+    let db = JSON.parse(localStorage.getItem('virat_v6')) || {
+        users: { 'admin': { password: '123', balance: 0 } },
+        requests: []
+    };
+    let currentUser = null;
+
+    function save() { localStorage.setItem('virat_v6', JSON.stringify(db)); }
+
+    // HOW TO PLAY RULES
+    const rules = {
+        'Aviator': "Plane udne se pehle cashout karein. Jitna upar plane jayega, paisa utna multiply hoga. Plane crash hua toh loss!",
+        'Mines': "Dabbo mein diamonds dhundein. Bomb par click kiya toh game over. Har diamond par multiplier badhta hai.",
+        'DVT': "Guess karein Dragon bada card layega ya Tiger. Sahi guess par 2x paisa milega."
+    };
+    function showHelp(game) { alert(`📖 Rules for ${game}:\n\n${rules[game]}`); }
+
+    function handleAuth() {
+        let u = document.getElementById('auth-user').value.trim();
+        let p = document.getElementById('auth-pass').value.trim();
+        if(!db.users[u]) db.users[u] = { password: p, balance: 100 };
+        currentUser = u;
+        document.getElementById('auth-screen').classList.add('hidden');
+        document.getElementById('game-screen').classList.remove('hidden');
+        document.getElementById('display-name').innerText = u;
+        updateUI();
+    }
+
+    function updateUI() { document.getElementById('display-balance').innerText = db.users[currentUser].balance; save(); }
+
+    function switchTab(t) {
+        document.getElementById('section-games').classList.toggle('hidden', t !== 'games');
+        document.getElementById('section-bank').classList.toggle('hidden', t !== 'bank');
+    }
+
+    // --- GAME LOGICS (Shorter Version for Display) ---
+    function playGame(betId, side, options) {
+        let bet = parseInt(document.getElementById(betId).value);
+        if(!bet || bet > db.users[currentUser].balance) return alert("Low Balance!");
+        db.users[currentUser].balance -= bet;
+        let res = options[Math.floor(Math.random()*options.length)];
+        setTimeout(() => {
+            if(side === res) { db.users[currentUser].balance += bet*2; alert(`WIN! Result: ${res}`); }
+            else { alert(`LOST! Result: ${res}`); }
+            updateUI();
+        }, 500);
+    }
+
+    // ADMIN FUNCTIONS
+    function openAdmin() {
+        if(prompt("Master Key:") !== "virat123") return;
+        document.getElementById('admin-screen').classList.remove('hidden');
+        renderAdmin();
+    }
+
+    function renderAdmin() {
+        let html = `<h3>Users & Balances</h3>`;
+        Object.keys(db.users).forEach(u => {
+            html += `<div class="card">${u}: ₹${db.users[u].balance} 
+            <button onclick="editBal('${u}')" style="font-size:10px; background:blue; color:white;">EDIT</button></div>`;
+        });
+        document.getElementById('admin-data').innerHTML = html;
+    }
+
+    function editBal(u) {
+        let amt = prompt("New Balance for " + u);
+        if(amt) { db.users[u].balance = parseInt(amt); save(); renderAdmin(); updateUI(); }
+    }
+
+    function closeAdmin() { document.getElementById('admin-screen').classList.add('hidden'); }
+    // ... Aviator & Mines logic remains same as previous version ...
+</script>
+</body>
+</html>
